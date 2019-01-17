@@ -45,7 +45,7 @@ WORKDIR app
 # Install deps for server.
 
 # Uncomment to skip the chromium download when installing puppeteer.
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+#ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 # Install puppeteer so it can be required by user code that gets run in
 # server.js. Cache bust so we always get the latest version of puppeteer when
@@ -53,10 +53,10 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 ARG CACHEBUST=1
 COPY ./package.json /app/
 RUN yarn add puppeteer
-RUN yarn   && chmod -R 777 /app/node_modules/codemirror
+RUN yarn install  
 
 COPY . /app/  
-RUN chmod -R 777 /app/public /app/puppeteer 
+RUN chmod -R 777 /app/public /app/puppeteer  /app/node_modules/codemirror
 
 # Add pptr user.
 RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
