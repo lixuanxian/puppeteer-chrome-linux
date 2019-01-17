@@ -1,0 +1,9 @@
+node_modules
+.DS_Store
+.vscode
+test*.js
+*-debug.log
+*-error.log
+.git
+.hg
+.svn

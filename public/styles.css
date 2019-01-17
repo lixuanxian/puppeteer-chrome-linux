@@ -1,0 +1,320 @@
+/**
+ * Copyright 2017 Google Inc., PhantomJS Authors All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+* {
+  box-sizing: border-box;
+}
+:root {
+  --default-padding: 16px;
+  --half-default-padding: calc(var(--default-padding) / 2);
+  --editor-background-color: var(--material-blue-grey-dark);
+  --shell-color: var(--material-blue-grey-800);
+  --material-blue-grey-300: #90A4AE;
+  --material-blue-grey-600: #546E7A;
+  --material-blue-grey-800: #37474F;
+  --material-blue-grey-dark: #263238;
+}
+body {
+  font-family: 'Product Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  margin: 0;
+  overflow: hidden;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: inherit;
+  line-height: 1;
+}
+main {
+  height: 100vh;
+}
+section {
+  width: 50%;
+}
+
+/* Layout classes */
+.layout {
+  display: flex;
+}
+.layout.vertical {
+  flex-direction: column;
+}
+.layout.center {
+  align-items: center;
+}
+.layout.center-center {
+  align-items: center;
+  justify-content: center;
+}
+.flex {
+  flex: 1;
+}
+
+.title {
+  font-size: 30px;
+}
+.subtitle {
+  font-size: 16px;
+  user-select: none;
+}
+.version {
+  margin-left: var(--default-padding);
+}
+.logo {
+  height: 25px;
+  margin-right: var(--half-default-padding);
+}
+.github-logo {
+  height: 25px;
+}
+#examples_list {
+  border: none;
+  border-radius: 0;
+  padding: var(--half-default-padding);
+  background: var(--material-blue-grey-600);
+  color: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  -webkit-appearance: none;
+  outline: none;
+  margin-left: var(--half-default-padding);
+}
+section header {
+  display: flex;
+  align-items: center;
+  height: 70px;
+  background-color: var(--shell-color);
+  color: #fff;
+}
+section footer {
+  padding: var(--default-padding);
+  background-color: var(--shell-color);
+  color: #fff;
+}
+.code-editor-section {
+  background: var(--editor-background-color);
+}
+.code-editor-section header,
+.result-section header {
+  padding: 0 var(--default-padding);
+}
+.result-section header {
+  justify-content: space-between;
+  padding-left: 0;
+}
+.puppeteer-results {
+  position: relative;
+  min-height: 0; /* github.com/ebidel/try-puppeteer/issues/36*/
+}
+.puppeteer-results-top {
+  height: 100%;
+  position: relative;
+}
+.puppeteer-results-top::after {
+  content: '';
+  position: absolute;
+  background: url('https://user-images.githubusercontent.com/10379601/29446482-04f7036a-841f-11e7-9872-91d1fc2ea683.png') no-repeat 50% 50%;
+  background-size: 45%;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.05;
+  z-index: -1;
+}
+.puppeteer-result-log, .puppeteer-result-output {
+  padding: var(--default-padding);
+  padding-top: 0;
+  position: relative;
+  white-space: pre;
+  height: 100%;
+  overflow: auto;
+  display: block;
+}
+.puppeteer-result-output img {
+  max-width: 100%;
+}
+.puppeteer-result-output iframe {
+  border: 0;
+  height: 100%;
+  width: 100%;
+}
+.puppeteer-results-panel {
+  transform: translateY(100%);
+  transition: transform 300ms ease-in-out;
+  height: 50%;
+  border-top: 5px solid var(--shell-color);
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #fff;
+}
+.puppeteer-results-panel.active {
+  transform: none;
+}
+.puppeteer-result-label {
+  font-size: 24px;
+  color: var(--shell-color);
+  text-transform: uppercase;
+  line-height: 1;
+  padding: var(--default-padding);
+  user-select: none;
+}
+#run_button {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  flex-shrink: 0;
+  align-self: flex-end;
+  top: calc(56px * 2);
+  margin-bottom: calc(var(--default-padding) * 2);
+  position: absolute;
+  background-color: var(--material-blue-grey-800);
+  color: #fff;
+  border: none;
+  font: inherit;
+  font-size: 20px;
+  padding: var(--default-padding);
+  cursor: pointer;
+  outline: none;
+  z-index: 100;
+  user-select: none;
+}
+#run_button[disabled] {
+  opacity: 0.6;
+}
+#run_button img {
+  height: 24px;
+  width: 24px;
+  margin-right: 4px;
+}
+
+#code-editor-area {
+  display: none;
+}
+
+/* Codemirror overrides */
+.CodeMirror {
+  font-family: inherit;
+  padding: var(--default-padding) 0;
+  height: 100%;
+}
+.CodeMirror.CodeMirror-wrap, .CodeMirror .CodeMirror-gutters {
+  background: var(--editor-background-color);
+}
+.CodeMirror .readonly-line {
+  position: relative;
+  pointer-events: none;
+}
+.CodeMirror .readonly-line::before {
+  background: var(--editor-background-color);
+  opacity: 0.5;
+  content: '';
+  width: 100%;
+  top: 0;
+  height: 100%;
+  position: absolute;
+  z-index: 5;
+}
+
+.loading-spinner-container {
+  --logo-size: 40px;
+  position: relative;
+  left: calc(50% - var(--logo-size) / 2);
+  top: calc(50% - var(--logo-size) / 2);
+}
+
+.loading-spinner {
+  position: absolute;
+  animation: rotator 1.4s linear infinite;
+  display: none;
+  width: var(--logo-size);
+  height: var(--logo-size);
+  z-index: 1;
+}
+.loading-spinner.active {
+  display: block;
+}
+
+@keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+.path {
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+}
+@keyframes colors {
+  0% {
+    stroke: #4285F4;
+  }
+  25% {
+    stroke: #DE3E35;
+  }
+  50% {
+    stroke: #F7C223;
+  }
+  75% {
+    stroke: #1B9A59;
+  }
+  100% {
+    stroke: #4285F4;
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    transform: rotate(450deg);
+  }
+}
+
+cycler-element {
+  display: block;
+  position: relative;
+}
+cycler-element .item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 800ms ease-in-out;
+  user-select: none;
+}
+cycler-element > :not(.hiding) {
+  position: relative;
+}
+
+cycler-element .item.hiding {
+  opacity: 0;
+}
